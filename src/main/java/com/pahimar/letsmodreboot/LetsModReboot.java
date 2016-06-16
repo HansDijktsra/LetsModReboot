@@ -1,22 +1,27 @@
 package com.pahimar.letsmodreboot;
 
-/**
- * Created by Hans on 15-6-2016.
- */
-
+import com.pahimar.letsmodreboot.configuration.ConfigurationHandler;
+import com.pahimar.letsmodreboot.proxy.IProxy;
+import com.pahimar.letsmodreboot.reference.Reference;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = "LetsModReboot", name = "Lets Mod Reboot", version = "1.7.2-1.0")
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION)
 public class LetsModReboot {
-    @Mod.Instance("LetsModReboot")
+    @Mod.Instance(Reference.MOD_ID)
     public static LetsModReboot instance;
+
+    @SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS,serverSide = Reference.SERVER_PROXY_CLASS)
+    public static IProxy proxy;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
-
+        ConfigurationHandler.init(event.getSuggestedConfigurationFile());
+        FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
     }
 
     @Mod.EventHandler
